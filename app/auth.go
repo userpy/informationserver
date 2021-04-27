@@ -9,19 +9,27 @@ import (
 	u "informationserver/utils"
 	"net/http"
 	"os"
+	"reflect"
 	"regexp"
 	"strings"
 )
 
-//Вхождение маршрута  проверку регистрации
+//Вхождение маршрута  проверку регистрации, добавление роли
 func CheckUrlPath(val string, array map[string]interface{}, role *[]interface{}) (exists bool) {
 	exists = false
-
 	for pattern, role_from_pattern := range array {
 		matched, _ := regexp.Match(pattern, []byte(val))
 		if matched {
-
-			*role = append(*role, role_from_pattern)
+			v := reflect.ValueOf(role_from_pattern)
+			switch v.Kind() {
+			case reflect.Slice:
+				for i := 0; i < v.Len(); i++ {
+					fmt.Printf("+++ %s %s\n", i, v.Index(i).String())
+					*role = append(*role, v.Index(i).String())
+				}
+			case reflect.Bool:
+				*role = append(*role, role_from_pattern)
+			}
 			exists = true
 			return exists
 		}
@@ -39,13 +47,10 @@ func ArrInterfaceToArrayString(interface_arr []interface{}) (string_arr []interf
 
 // Проверка роли пользователя
 func CheckRole(role_token []interface{}, role_check_in_server []interface{}) (exist bool) {
-	fmt.Printf("IIIIIIIII\n")
-
 	if role_check_in_server[0] == false {
 		exist = false
 		return
 	} else {
-		//fmt.Printf("%s %s", role_token, role_check_in_server)
 		if len(set.NewSetFromSlice(ArrInterfaceToArrayString(role_token)).Intersect(set.NewSetFromSlice(ArrInterfaceToArrayString(role_check_in_server))).ToSlice()) != 0 {
 			fmt.Printf("Пересекаются\n")
 			exist = false
@@ -61,15 +66,12 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		//Список эндпоинтов, для которых  требуется авторизация, с проверкой роли или без
 		Auth := map[string]interface{}{
 			"/api/contacts/new":       []string{"admin", "user"},
-			"/api/user/\\d*/contacts": []string{"admin", "user"}}
+			"/api/user/\\d*/contacts": false}
 
 		requestPath := r.URL.Path //текущий путь запроса
 		//проверяем, не требует ли запрос аутентификации, обслуживаем запрос, если он не нужен
 		var role []interface{}
-		fmt.Printf("1)*********************\n")
 		if CheckUrlPath(requestPath, Auth, &role) {
-
-			fmt.Printf("2)********************* %s\n")
 			response := make(map[string]interface{})
 			tokenHeader := r.Header.Get("Authorization") //Получение токена
 			if tokenHeader == "" {                       //Токен отсутствует, возвращаем  403 http-код Unauthorized
@@ -79,7 +81,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 				u.Respond(w, response)
 				return
 			}
-			fmt.Printf("3)*********************\n")
 			splitted := strings.Split(tokenHeader, " ")
 			//Токен обычно поставляется в формате `Bearer {token-body}`,
 			// мы проверяем, соответствует ли полученный токен этому требованию
@@ -97,7 +98,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			token, err := jwt.ParseWithClaims(tokenPart, tk, func(token *jwt.Token) (interface{}, error) {
 				return []byte(os.Getenv("token_password")), nil
 			})
-			fmt.Printf("4)*********************\n")
 			//Неправильный токен, как правило, возвращает 403 http-код
 			if err != nil {
 				response = u.Message(false, "Malformed authentication token")
@@ -116,7 +116,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			}
 			//Всё прошло хорошо, продолжаем выполнение запроса
 			//Полезно для мониторинга
-			fmt.Printf("5)*********************\n")
 			if CheckRole(tk.Role, role) {
 				response = u.Message(false, "Role is not valid.")
 				w.WriteHeader(http.StatusForbidden)
@@ -124,7 +123,6 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 				u.Respond(w, response)
 				return
 			}
-			fmt.Printf("Проверка роли прошла успешно\n")
 			ctx := context.WithValue(r.Context(), "user", tk.UserId)
 			r = r.WithContext(ctx)
 			//fmt.Printf(">>>>>>\n")
