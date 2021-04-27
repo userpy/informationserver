@@ -66,7 +66,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		//Список эндпоинтов, для которых  требуется авторизация, с проверкой роли или без
 		Auth := map[string]interface{}{
 			"/api/contacts/new":       []string{"admin", "user"},
-			"/api/user/\\d*/contacts": false}
+			"/api/user/\\d*/contacts": []string{"admin"}}
 
 		requestPath := r.URL.Path //текущий путь запроса
 		//проверяем, не требует ли запрос аутентификации, обслуживаем запрос, если он не нужен
