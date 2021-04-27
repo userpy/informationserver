@@ -16,7 +16,7 @@ type Token struct {
 	UserId uint
 	Email  string
 	User   string
-	Role   interface{}
+	Role   []interface{}
 	jwt.StandardClaims
 }
 
@@ -26,7 +26,7 @@ type Account struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Token    string `json:"token";sql:"-"`
-	User     string `json:"user";sql:"-"`
+	User     string `json:"user"`
 }
 
 type Role struct {
@@ -35,13 +35,13 @@ type Role struct {
 }
 
 //Получить роли
-func (account *Account) GetRoles() []string {
+func (account *Account) GetRoles() []interface{} {
 	responseRole := []Role{}
 	err := GetDB().Table("roles").Where("user_id = ?", account.ID).Find(&responseRole).Error
 	if err != nil {
 		return nil
 	}
-	var responseRoleArr []string
+	var responseRoleArr []interface{}
 	for _, val := range responseRole {
 		responseRoleArr = append(responseRoleArr, val.RoleName)
 	}
