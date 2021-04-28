@@ -20,7 +20,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			"/api/user/\\d*/contacts": []string{"admin"}}
 
 		requestPath := r.URL.Path //текущий путь запроса
-		//проверяем, не требует ли запрос аутентификации, обслуживаем запрос, если он не нужен
+		//проверяем, не требует ли запрос аутентификации, обслуживаем запрос, если он  нужен
 		var role []interface{}
 		if CheckUrlPath(requestPath, Auth, &role) {
 			response := make(map[string]interface{})
