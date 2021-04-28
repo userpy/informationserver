@@ -2,10 +2,10 @@
 
 import Vue from 'vue';
 import axios from "axios";
-
+const AUTH_TOKEN = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjIsIkVtYWlsIjoiYWRtQG1haWwucnUiLCJVc2VyIjoia29uc3RhbnRpbiIsIlJvbGUiOlsiYWRtaW4iLCJ1c2VyIiwic3R1ZmYiLCJ0ZWFjaGVyIl19.SWhqiKMTz3Q0D2gBVxLMWhSK-NS-h0xtIy_YURc7nJg`
 // Full config:  https://github.com/axios/axios#request-config
 axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
-//axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {

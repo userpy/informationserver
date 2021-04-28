@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"informationserver/models"
 	u "informationserver/utils"
@@ -27,7 +28,7 @@ var CreateContact = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
-	//fmt.Printf("Get contacts \n")
+	fmt.Printf("%s", r.Context().Value("user"))
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
@@ -35,7 +36,6 @@ var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, u.Message(false, "There was an error in your request"))
 		return
 	}
-
 	data := models.GetContacts(uint(id))
 	resp := u.Message(true, "success")
 	resp["data"] = data

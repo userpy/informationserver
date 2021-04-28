@@ -72,8 +72,9 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 				u.Respond(w, response)
 				return
 			}
-			ctx := context.WithValue(r.Context(), "user", tk.UserId)
-			r = r.WithContext(ctx)
+			//Записываем значение в контекст
+			r = r.WithContext(context.WithValue(r.Context(), "user", tk.UserId))
+			r = r.WithContext(context.WithValue(r.Context(), "role", tk.Role))
 			next.ServeHTTP(w, r) //передать управление следующему обработчику!
 
 		} else {
