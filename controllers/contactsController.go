@@ -7,6 +7,7 @@ import (
 	"informationserver/models"
 	u "informationserver/utils"
 	"net/http"
+	"reflect"
 	"strconv"
 )
 
@@ -37,6 +38,17 @@ var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := models.GetContacts(uint(id))
+	resp := u.Message(true, "success")
+	resp["data"] = data
+	u.Respond(w, resp)
+}
+
+var GetContactsForCurentUser = func(w http.ResponseWriter, r *http.Request) {
+	context_user_id := reflect.ValueOf(r.Context().Value("user")).Uint()
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["user"])
+	fmt.Printf("%s %s", id, err)
+	data := models.GetContacts(uint(context_user_id))
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)

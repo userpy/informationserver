@@ -12,10 +12,10 @@
       HelloWorld,
     },
     created() {
-      axios.get('/api/user/2/contacts').catch(val => {
+      axios.get('/api/user/contacts').catch(val => {
          console.log(`Ошибка =====${val}\n`)
       }).then(val => {
-        console.log(` test axios ==========${JSON.stringify(val)}\n`)
+        console.log(` test axios ==========${JSON.stringify(val.data)}\n`)
       })
     }
   }

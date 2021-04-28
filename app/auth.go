@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	jwt "github.com/dgrijalva/jwt-go"
 	"informationserver/models"
 	u "informationserver/utils"
@@ -16,7 +17,8 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		//Список эндпоинтов, для которых  требуется авторизация, с проверкой роли или без
 		Auth := map[string]interface{}{
 			"/api/contacts/new":       []string{"admin", "user"},
-			"/api/user/\\d*/contacts": []string{"admin"}}
+			"/api/user/\\d*/contacts": []string{"admin"},
+			"/api/user/contacts":      []string{"admin"}}
 
 		requestPath := r.URL.Path //текущий путь запроса
 		//проверяем, не требует ли запрос аутентификации, обслуживаем запрос, если он  нужен
@@ -73,6 +75,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 				return
 			}
 			//Записываем значение в контекст
+			fmt.Printf(">*** %s\n", tk.UserId)
 			r = r.WithContext(context.WithValue(r.Context(), "user", tk.UserId))
 			r = r.WithContext(context.WithValue(r.Context(), "role", tk.Role))
 			next.ServeHTTP(w, r) //передать управление следующему обработчику!

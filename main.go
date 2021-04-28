@@ -17,6 +17,7 @@ func main() {
 	router.HandleFunc("/api/user/login", controllers.Authenticate).Methods("POST")
 	router.HandleFunc("/api/contacts/new", controllers.CreateContact).Methods("GET")
 	router.HandleFunc("/api/user/{id}/contacts", controllers.GetContactsFor).Methods("GET")
+	router.HandleFunc("/api/user/contacts", controllers.GetContactsForCurentUser).Methods("GET")
 	spa := app.SpaHandler{StaticPath: "frontend/dist/", IndexPath: "frontend/dist/index.html"}
 	router.PathPrefix("/").Handler(spa)
 	port := os.Getenv("PORT") //Получить порт из файла .env; мы не указали порт, поэтому при локальном тестировании должна возвращаться пустая строка
