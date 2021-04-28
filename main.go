@@ -23,9 +23,7 @@ func main() {
 	if port == "" {
 		port = "8000" //localhost
 	}
-
 	fmt.Println(port)
-
 	err := http.ListenAndServe(":"+port, router) //Запустите приложение, посетите localhost:8000/api
 
 	if err != nil {

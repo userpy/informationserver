@@ -17,7 +17,7 @@ func CheckUrlPath(val string, array map[string]interface{}, role *[]interface{})
 			switch v.Kind() {
 			case reflect.Slice:
 				for i := 0; i < v.Len(); i++ {
-					fmt.Printf("+++ %s %s\n", i, v.Index(i).String())
+					//fmt.Printf("+++ %s %s\n", i, v.Index(i).String())
 					*role = append(*role, v.Index(i).String())
 				}
 			case reflect.Bool:
@@ -45,7 +45,7 @@ func CheckRole(role_token []interface{}, role_check_in_server []interface{}) (ex
 		return
 	} else {
 		if len(set.NewSetFromSlice(ArrInterfaceToArrayString(role_token)).Intersect(set.NewSetFromSlice(ArrInterfaceToArrayString(role_check_in_server))).ToSlice()) != 0 {
-			fmt.Printf("Пересекаются\n")
+			//fmt.Printf("Пересекаются\n")
 			exist = false
 			return
 		}

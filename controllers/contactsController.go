@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"informationserver/models"
 	u "informationserver/utils"
@@ -28,7 +27,7 @@ var CreateContact = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Get contacts \n")
+	//fmt.Printf("Get contacts \n")
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {

@@ -78,7 +78,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r) //передать управление следующему обработчику!
 
 		} else {
-			fmt.Printf("-")
+			//fmt.Printf("-")
 			next.ServeHTTP(w, r)
 			return
 		}
