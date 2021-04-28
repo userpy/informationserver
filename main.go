@@ -48,14 +48,13 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	//https://tproger.ru/translations/deploy-a-secure-golang-rest-api/
 	router := mux.NewRouter()
-	spa := spaHandler{staticPath: "frontend/dist/", indexPath: "frontend/dist/index.html"}
-	router.PathPrefix("/").Handler(spa)
 	router.Use(app.JwtAuthentication) // добавляем middleware проверки JWT-токена
 	router.HandleFunc("/api/user/new", controllers.CreateAccount).Methods("POST")
 	router.HandleFunc("/api/user/login", controllers.Authenticate).Methods("POST")
 	router.HandleFunc("/api/contacts/new", controllers.CreateContact).Methods("GET")
 	router.HandleFunc("/api/user/{id}/contacts", controllers.GetContactsFor).Methods("GET")
-
+	spa := spaHandler{staticPath: "frontend/dist/", indexPath: "frontend/dist/index.html"}
+	router.PathPrefix("/").Handler(spa)
 	port := os.Getenv("PORT") //Получить порт из файла .env; мы не указали порт, поэтому при локальном тестировании должна возвращаться пустая строка
 	if port == "" {
 		port = "8000" //localhost
