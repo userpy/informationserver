@@ -45,9 +45,6 @@ var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
 
 var GetContactsForCurentUser = func(w http.ResponseWriter, r *http.Request) {
 	context_user_id := reflect.ValueOf(r.Context().Value("user")).Uint()
-	params := mux.Vars(r)
-	id, err := strconv.Atoi(params["user"])
-	fmt.Printf("%s %s", id, err)
 	data := models.GetContacts(uint(context_user_id))
 	resp := u.Message(true, "success")
 	resp["data"] = data
