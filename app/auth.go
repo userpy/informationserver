@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	jwt "github.com/dgrijalva/jwt-go"
 	"informationserver/models"
 	u "informationserver/utils"
