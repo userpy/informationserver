@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 )
 
 func Message(status bool, message string) map[string]interface{} {
@@ -24,7 +23,7 @@ func GetContextValueUint(r *http.Request, val string) (response uint64, err erro
 			return
 		}
 	}()
-	return reflect.ValueOf(r.Context().Value(val)).Uint(), nil
+	return r.Context().Value(val).(uint64), nil
 }
 
 func GetContextValueInt(r *http.Request, val string) (response int64, err error) {
@@ -35,5 +34,5 @@ func GetContextValueInt(r *http.Request, val string) (response int64, err error)
 			return
 		}
 	}()
-	return reflect.ValueOf(r.Context().Value(val)).Int(), nil
+	return r.Context().Value(val).(int64), nil
 }
