@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"informationserver/models"
 	u "informationserver/utils"
@@ -42,6 +43,7 @@ var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetContactsForCurentUser = func(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Get contacts for curen user \n")
 	user_id, err := u.GetContextValueUint(r, "user")
 	if err != nil {
 		//Переданный параметр пути не является целым числом
