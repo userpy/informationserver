@@ -7,7 +7,7 @@ import (
 	"informationserver/models"
 	u "informationserver/utils"
 	"net/http"
-	"reflect"
+
 	"strconv"
 )
 
@@ -44,8 +44,13 @@ var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetContactsForCurentUser = func(w http.ResponseWriter, r *http.Request) {
-	context_user_id := reflect.ValueOf(r.Context().Value("user")).Uint()
-	data := models.GetContacts(uint(context_user_id))
+	user_id, err := u.GetContextValueUint(r, "user")
+	if err != nil {
+		//Переданный параметр пути не является целым числом
+		u.Respond(w, u.Message(false, "There was an error in your request"))
+		return
+	}
+	data := models.GetContacts(uint(user_id))
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)
