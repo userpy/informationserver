@@ -2,11 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"informationserver/models"
 	u "informationserver/utils"
 	"net/http"
+
 	"strconv"
 )
 
@@ -28,7 +28,6 @@ var CreateContact = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Get contacts \n")
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
@@ -36,8 +35,20 @@ var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, u.Message(false, "There was an error in your request"))
 		return
 	}
-
 	data := models.GetContacts(uint(id))
+	resp := u.Message(true, "success")
+	resp["data"] = data
+	u.Respond(w, resp)
+}
+
+var GetContactsForCurentUser = func(w http.ResponseWriter, r *http.Request) {
+	user_id, err := u.GetContextValueUint(r, "user")
+	if err != nil {
+		//Переданный параметр пути не является целым числом
+		u.Respond(w, u.Message(false, "There was an error in your request"))
+		return
+	}
+	data := models.GetContacts(uint(user_id))
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)

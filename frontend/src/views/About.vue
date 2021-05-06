@@ -1,5 +1,33 @@
 <template>
-  <div class="about">
+  <div>
     <h1>This is an about page</h1>
+    <template>
+      <v-row
+              align="center"
+              justify="space-around"
+      >
+        <v-btn depressed>
+          Normal
+        </v-btn>
+        <v-btn
+                depressed
+                color="primary"
+        >
+          Primary
+        </v-btn>
+        <v-btn
+                depressed
+                color="error"
+        >
+          Error
+        </v-btn>
+        <v-btn
+                depressed
+                disabled
+        >
+          Disabled
+        </v-btn>
+      </v-row>
+    </template>
   </div>
 </template>
