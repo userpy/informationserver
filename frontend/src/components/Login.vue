@@ -53,6 +53,7 @@
                             md="3"
                     >
                         <v-text-field
+                                :rules="passwordRules"
                                 v-model="password"
                                 label="Пароль"
                                 type="password"
@@ -96,6 +97,14 @@
         name: "Login",
         data:function () {
             return{
+                nameRules:[
+                    v => !!v || "Это поле не должно быть пустым",
+                    v => v.length >= 6 || 'Имя должно быть больше 6 символов',
+                ],
+                passwordRules:[
+                    v => !!v || "Это поле не должно быть пустым",
+                    v => v.length >= 8 || 'Пароль должен быть больше 8 символов',
+                ],
                 login:null,
                 password: null
             }

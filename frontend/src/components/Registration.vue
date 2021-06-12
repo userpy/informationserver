@@ -73,7 +73,7 @@
                             md="3"
                     >
                         <v-text-field
-                                :rules="passwordRules"
+                                :rules="passwordConfirmRules"
                                 v-model="passwordConfirm"
                                 label="Подтвердить пароль"
                                 type="password"
@@ -145,6 +145,11 @@
         data:function () {
             return{
                 passwordRules:[
+                    v => !!v || 'Пароль обязательное поле',
+                    v => v.length >= 8 || 'Пароль должен быть больше 8 символов',
+                ],
+                passwordConfirmRules:[
+                    v => !!v || 'Пароль обязательное поле',
                     v => this.Password(v) || 'Пароли должны совпадать'
                 ],
                 nameRules: [
