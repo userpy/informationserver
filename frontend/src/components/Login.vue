@@ -38,6 +38,7 @@
                                 :rules="nameRules"
                                 label="Логин"
                                 required
+                                outlined
                         ></v-text-field>
                     </v-col>
                     <v-col>
@@ -58,6 +59,7 @@
                                 label="Пароль"
                                 type="password"
                                 required
+                                outlined
                         ></v-text-field>
                     </v-col>
                     <v-col>
