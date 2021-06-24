@@ -144,13 +144,20 @@
                 } else {
                     return false;
                 }
+            },
+            getLength(val, len) {
+                try{
+                    return  val.length >= len ? true: false
+                }catch (e) {
+                    return null
+                }
             }
         },
         data:function () {
             return{
                 passwordRules:[
                     v => !!v || 'Пароль обязательное поле',
-                    v => v.length >= 8 || 'Пароль должен быть больше 8 символов',
+                    v => this.getLength(v, 8) || 'Пароль должен быть больше 8 символов',
                 ],
                 passwordConfirmRules:[
                     v => !!v || 'Пароль обязательное поле',
@@ -158,7 +165,7 @@
                 ],
                 nameRules: [
                     v => !!v || 'Name обязательное поле',
-                    v => v.length >= 6 || 'Имя должно быть больше 6 символов',
+                    v => this.getLength(v, 4) || 'Имя должно быть больше 4 символов',
                 ],
                 emailRules: [
                     v => !!v || 'E-mail обязательное поле',

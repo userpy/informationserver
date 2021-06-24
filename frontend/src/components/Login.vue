@@ -94,18 +94,25 @@
         methods:{
            state: function(val){
               this.$emit('update:formType', val);
-          },
+           },
+           getLength(val, len) {
+               try{
+                   return  val.length >= len ? true: false
+               }catch (e) {
+                   return null
+               }
+           }
         },
         name: "Login",
         data:function () {
             return{
                 nameRules:[
                     v => !!v || "Это поле не должно быть пустым",
-                    v => v.length >= 6 || 'Имя должно быть больше 6 символов',
+                    v => this.getLength(v, 4)|| 'Имя должно быть больше 4 символов',
                 ],
                 passwordRules:[
                     v => !!v || "Это поле не должно быть пустым",
-                    v => v.length >= 8 || 'Пароль должен быть больше 8 символов',
+                    v => this.getLength(v, 8) || 'Пароль должен быть больше 8 символов',
                 ],
                 login:null,
                 password: null
