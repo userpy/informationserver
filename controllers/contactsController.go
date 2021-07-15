@@ -28,6 +28,7 @@ var CreateContact = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
+/*Получение контактов по id пользователя*/
 var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
@@ -42,6 +43,7 @@ var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
+/*Получение всех контактов пользователя */
 var GetContactsForCurentUser = func(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Get contacts for curen user \n")
 	user_id, err := u.GetContextValueUint(r, "user")

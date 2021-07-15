@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+/* Создание пользователя*/
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 	fmt.Print("Create account >\n")
 
@@ -22,6 +23,7 @@ var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
+/*Регистрация*/
 var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 
 	account := &models.Account{}
